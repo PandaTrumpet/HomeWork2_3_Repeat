@@ -2,8 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
 import { env } from './utils/env.js';
-import { getAllContacts, getContactById } from './services/contacts.js';
+
 import detenv from 'dotenv';
+import contactRouter from './routers/contacts.js';
 detenv.config();
 const PORT = Number(env('PORT', '3000'));
 export const setupServer = () => {
@@ -20,32 +21,31 @@ export const setupServer = () => {
       message: 'Hello',
     });
   });
+  app.use(contactRouter);
+  // app.get('/contacts', async (req, res) => {
+  //   try {
+  //     const contacts = await getAllContacts();
+  //     res.status(200).json({
+  //       status: 200,
 
-  app.get('/contacts', async (req, res) => {
-    try {
-      const contacts = await getAllContacts();
-      res.status(200).json({
-        status: 200,
-        message: 'Successfully found contacts!',
-        data: contacts,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  });
-  app.get('/contacts/:contactId', async (req, res) => {
-    try {
-      const { id } = req.params;
-      const contact = await getContactById(id);
-      res.status(200).json({
-        status: 200,
-        message: 'Successfully found contact with id {contactId}!',
-        data: contact,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  });
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // });
+  // app.get('/contacts/:contactId', async (req, res) => {
+  //   try {
+  //     const { id } = req.params;
+  //     const contact = await getContactById(id);
+  //     res.status(200).json({
+  //       status: 200,
+  //       message: 'Successfully found contact with id {contactId}!',
+  //       data: contact,
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // });
   app.get('*', (req, res, next) => {
     res.status(404).json({
       message: 'Not found',
