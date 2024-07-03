@@ -30,33 +30,6 @@ export const setupServer = () => {
   //     res.status(200).json({
   //       status: 200,
 
-<<<<<<< Updated upstream
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // });
-  // app.get('/contacts/:contactId', async (req, res) => {
-  //   try {
-  //     const { id } = req.params;
-  //     const contact = await getContactById(id);
-  //     res.status(200).json({
-  //       status: 200,
-  //       message: 'Successfully found contact with id {contactId}!',
-  //       data: contact,
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // });
-  // app.get('*', (req, res, next) => {
-  //   res.status(404).json({
-  //     message: 'Not found',
-  //   });
-  // });
-  app.use(notFoundRoute);
-  app.use(errorHandler);
-=======
   app.get('/contacts', async (req, res) => {
     try {
       const contacts = await getAllContacts();
@@ -104,7 +77,6 @@ export const setupServer = () => {
       message: 'Not found',
     });
   });
->>>>>>> Stashed changes
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT} `);
