@@ -38,12 +38,11 @@ export const addContactController = async (req, res) => {
   });
 };
 export const upsertContactController = async (req, res, next) => {
-  const { id } = req.params;
-  const contact = await upsertContact(id, req.body, { upsert: true });
+  const { contactId } = req.params;
+  const contact = await upsertContact(contactId, req.body, { upsert: true });
   if (!contact) {
-    return next(
-      createHttpError(404, { message: 'You have a problem with pathing' }),
-    );
+    next(createHttpError(404, { message: 'You have a problem with pathing' }));
+    return;
   }
   res.status(200).json({
     status: 200,
@@ -55,10 +54,8 @@ export const deleteContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const contact = await deleteContact(contactId);
   if (!contact) {
-    // return next(
-    //   createHttpError(404, { status: 404, message: 'Contact not found' }),
-    // );
-    return next(createHttpError(404, { message: 'Contact not found' }));
+    next(createHttpError(404, { message: 'Contact not found' }));
+    return;
   }
   res.status(204).send();
 };
