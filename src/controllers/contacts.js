@@ -5,12 +5,23 @@ import {
   getContactById,
   upsertContact,
 } from '../services/contacts.js';
-import { errorHanlder } from '../middlewares/errorHandler.js';
+// import { errorHanlder } from '../middlewares/errorHandler.js';
 import createHttpError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParamas } from '../utils/perseSortParams.js';
+import { contactsFieldList } from '../constans/contacts-constant.js';
+import { parseFilterContactsParams } from '../utils/parseFilterParams.js';
 export const getAllContactsController = async (req, res, next) => {
   const { page, perPage } = parsePaginationParams(req.query);
-  const contacts = await getAllContacts({ page, perPage });
+  const { sortBy, sortOrder } = parseSortParamas(req.query, contactsFieldList);
+  const filter = parseFilterContactsParams(req.query);
+  const contacts = await getAllContacts({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter,
+  });
   res.status(200).json({
     status: 200,
     message: 'Successfully found contacts!',
